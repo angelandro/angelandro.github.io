@@ -66,18 +66,12 @@
 			void main( void ) {
 
                 vec2 pos=2.0*(gl_FragCoord.xy/resolution.xy)-1.0;
-                 vec2 pos1=2.0*(gl_FragCoord.xy/resolution.xy)-1.2;
-                  vec2 pos2=2.0*(gl_FragCoord.xy/resolution.xy)-1.5;
                 pos.y*=(resolution.y/resolution.x);
-                 pos1.y*=(resolution.y/resolution.x);
-                  pos2.y*=(resolution.y/resolution.x);
                 float aa =atan(pos.x,pos.y);
-                 float aa1 =atan(pos1.x,pos1.y);
-                  float aa2 =atan(pos2.x,pos2.y);
 
-                color.r= abs(sin( floor( aa * 4.0 + time )));
-                color.b= abs(sin( floor( aa1 * 4.0 - time )));
-                color.g= abs(cos( floor( aa2 * 2.0 + time )));
+                color.r= sin( floor( aa * 2.0 + time ));
+                color.b= sin( floor( aa * 2.0 - time ));
+                color.g= tan( floor( aa * 2.0 + time ));
 
                 gl_FragColor=vec4(color,0.0);
 
