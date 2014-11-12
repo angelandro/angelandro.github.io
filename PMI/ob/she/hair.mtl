@@ -1,0 +1,40 @@
+newmtl Helena_Asia_RE6:head_material_0
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0100_00hair_00_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0100_00hair_00_MM.tga
+Ns 0.00
+newmtl Helena_Asia_RE6:head_material_2
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0100_00hair_01_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0100_00hair_01_MM.tga
+Ns 0.00
+newmtl Helena_Asia_RE6:material_3
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0110_21_cloth_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0110_21_cloth_MM.tga
+Ns 0.00
+newmtl Helena_Asia_RE6:material_4
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0110_20_jacket_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0110_20_jacket_MM.tga
+Ns 0.00

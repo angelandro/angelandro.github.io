@@ -1,0 +1,596 @@
+<html>
+ <head>
+ 	 <title></title>
+     <style >
+	     body
+         {
+           margin: 0px;
+		   overflow: hidden;
+         }
+         #b1
+          { 
+          	background-color: black;
+          	 color: red;
+          	 border-radius: 50%;
+            position: absolute;
+           left: 41%;
+           top: 5%;
+            height: 50px;
+            width: 90px;
+          }
+
+          #b2
+          {
+          	background-color: black;
+          	 color: blue;
+          	 border-radius: 50%;
+            position: absolute;
+           left: 51%;
+           top: 5%;
+           height: 50px;
+            width: 90px;
+          }
+          
+           #g3
+          { 
+          	background-color: black;
+          	 color: white;
+          	 border-radius: 50%;
+            position: absolute;
+           left: 45%;
+           top: 95%;
+           height: 35px;
+            width: 90px;
+          }
+
+           #j11
+          {
+          	color:green;
+            position: absolute;
+            left: 85%;
+            top: 5%;
+            font-size: 50px;
+          }
+          #j12
+          {
+          	color:green;
+            position: absolute;
+            left: 80%;
+            top: 5%;
+            font-size: 50px;
+          }
+
+        </style>
+ </head>
+     <body>
+
+     	 <script src="js/three.min.js"></script>
+         <script src="js/stats.min.js"></script>
+         <script src="js/DDSLoader.js"></script>
+         <script src="js/OBJMTLLoader.js"></script>
+         <script src="js/OBJLoader.js"></script>
+         <script src="js/MTLLoader.js"></script>
+
+     	<audio id="clic"><source src="son/button.mp3" type="audio/ogg"></audio>
+
+     	<button type="button" onclick="estado();" id="b1"> Hombre </button>
+        <button type="button" onclick="estado2();" id="b2"> Mujer</button>
+	   
+        <button type="button" onclick="play();" id="g3"> P/S</button>
+
+         <div  id="j11">0</div>
+         <div  id="j12">$</div>
+       
+        </select>
+
+	     <script>
+	        var container, stats;
+			var camara, scene, raycaster, render2;
+		    var total=0.0,Ppantalon=0.0,Pplayera=0.0;
+			var clic = document.getElementById("clic");
+
+			var mouse = new THREE.Vector2(), INTERSECTED;
+			
+            var object,object2,object3;
+            var object4=new Array();
+            var object5=new Array();
+            var object6=new Array();
+            var cubesnames=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/x.jpg","im/x.jpg"];
+            var cubesnames2=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/1p.jpg","im/2p.jpg"];
+            var cubesnames3=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/1j.jpg","im/2j.jpg"];
+            var gira=0.0,gira2=0.0,Egira=1.0;
+            var dir=true;
+
+            //
+            var MODELO = new THREE.OBJMTLLoader();
+            THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+           
+            var models = new Array();
+            var entra = new Array();
+            var tipo=new Array();
+            var down=false,E1=false,E2=false;
+            var id,indi=0;
+           
+            //
+			ini();
+			animate();
+			function ini()
+			{
+                for(var q=0;q<15;q++)
+				{
+					models[q]=new THREE.Object3D();
+					entra[q]=true;
+					tipo[q]=false;
+				}
+
+                container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+                camara = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 	 );
+               
+                scene = new THREE.Scene();
+
+				var light = new THREE.DirectionalLight( 0xffffff, 1 );
+				light.position.set( -5, 1, 30 ).normalize();
+				scene.add( light );
+
+				var listen = new THREE.AudioListener();
+				camara.add( listen );
+				var sound1 = new THREE.Audio( listen );
+				sound1.load( 'son/song2.mp3' );
+				scene.add(sound1);
+
+				sound1.setRefDistance(3);
+
+
+				var geometry = new THREE.BoxGeometry( 4, 4, 4 );
+				var geometry2 = new THREE.BoxGeometry( 3, 3,0.01 );
+
+				var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                    map: THREE.ImageUtils.loadTexture( "im/sombrero.jpg" ) } );
+
+				var cubeMaterial2 = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                    map: THREE.ImageUtils.loadTexture( "im/playera.jpg" ) } );
+
+				var cubeMaterial3 = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                    map: THREE.ImageUtils.loadTexture( "im/Pantalon.jpg" ) } );
+
+
+
+					object = new THREE.Mesh( geometry,cubeMaterial);
+                    object.position.y=5;
+                    object.position.x=-15;
+                    object.position.z=65;
+
+                    object.rotation.y=25;
+                    scene.add( object );
+
+                    object2 = new THREE.Mesh( geometry,cubeMaterial2);
+                    object2.position.y=0;
+                    object2.position.x=-15;
+                    object2.position.z=65;
+
+                    object2.rotation.y=25;
+                    scene.add( object2 );
+
+
+					object3 = new THREE.Mesh( geometry,cubeMaterial3);
+                    object3.position.y=-5;
+                    object3.position.x=-15;
+                    object3.position.z=65;
+
+                    object3.rotation.y=25;
+                    scene.add( object3 );
+
+				   for(var w=0;w<3;w++)
+				   {
+				   	for(var v=0;v<2;v++)
+                     {   
+                     	var cubosMaterial=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                        map: THREE.ImageUtils.loadTexture( cubesnames[indi] ) } );
+                     	object4[indi] = new THREE.Mesh( geometry2,cubosMaterial);
+                     	object4[indi].position.z=65;
+                        object4[indi].position.x=(v*4)+12;
+                        object4[indi].position.y=(w*5)-5;  
+                        /////////////
+                        var cubosMaterial2=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                        map: THREE.ImageUtils.loadTexture( cubesnames2[indi] ) } );
+                     	object5[indi] = new THREE.Mesh( geometry2,cubosMaterial2);
+                     	object5[indi].position.z=65;
+                        object5[indi].position.x=(v*4)+12;
+                        object5[indi].position.y=(w*5)-5; 
+                        ///////////////
+                        var cubosMaterial3=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				                                                        map: THREE.ImageUtils.loadTexture( cubesnames3[indi] ) } );
+                     	object6[indi] = new THREE.Mesh( geometry2,cubosMaterial3);
+                     	object6[indi].position.z=65;
+                        object6[indi].position.x=(v*4)+12;
+                        object6[indi].position.y=(w*5)-5; 
+                        indi++;
+                                        	
+                     }
+				   }
+
+			    var helper = new THREE.GridHelper( 500, 10 );
+				helper.color1.setHex( 0x444444 );
+				helper.color2.setHex( 0x444444 );
+				helper.position.y = -17.1
+				scene.add( helper );
+
+				raycaster = new THREE.Raycaster();
+
+				render2 = new THREE.WebGLRenderer();
+				render2.setClearColor( 0x101a1f );
+				render2.setSize( window.innerWidth, window.innerHeight );
+				render2.sortObjects = false;
+				container.appendChild(render2.domElement);
+
+			    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.onclick = MouseClick;
+				window.addEventListener( 'resize', onWindowResize, false );
+			} 
+
+			function MouseClick(event)
+			{
+				if(event.button==0)
+			     {  
+			     	
+					if(down==true)
+					{   
+						
+						clic.volume = 0.2;
+	  			 		clic.play();
+
+						if(id==object.uuid)
+						{    
+					
+							for(var ww=0.0;ww<object4.length;ww++)
+							{
+                               scene.remove(object4[ww]);
+                               scene.remove(object5[ww]);
+                               scene.remove(object6[ww]);
+                               scene.add(object4[ww]);
+							}
+						
+						
+						}
+						if(id==object2.uuid)
+						{    
+						
+							for(var ww=0.0;ww<object5.length;ww++)
+							{
+                               scene.remove(object4[ww]);
+                               scene.remove(object5[ww]);
+                               scene.remove(object6[ww]);
+                               scene.add(object5[ww]);
+							}
+							
+						}
+
+						if(id==object3.uuid)
+						{   
+						
+							for(var ww=0.0;ww<object6.length;ww++)
+							{
+                               scene.remove(object4[ww]);
+                               scene.remove(object5[ww]);
+                               scene.remove(object6[ww]);
+                               scene.add(object6[ww]);
+							}
+							
+						}
+
+						if(id==object5[4].uuid)
+						{   
+						 if(E2==true)
+						 {
+						 loadModel('ob/she2/jacket5.obj','ob/she2/jacket5.mtl',0.0,-17.0,45.0,4,entra[4]);
+						 Pplayera=599.99;
+						 scene.remove(models[5]);
+						 scene.remove(models[4]);
+						 scene.remove(models[6]);
+						 scene.add(models[4]);
+						
+						}
+						if(E1==true)
+						{
+							loadModel('ob/he2/chamarra.obj','ob/he2/chamarra.mtl',0.0,-17.7,45.0,10,entra[10]);
+
+                            Pplayera=420.20;
+                             scene.remove(models[10]);
+                             scene.add(models[10]);
+						}
+							
+						}
+						if(id==object5[5].uuid)
+						{   
+						 if(E2==true)
+						 { 
+						 	Pplayera=536.00;
+						 loadModel('ob/she2/blusa2.obj','ob/she2/blusa2.mtl',0.0,-17.0,45.0,5,entra[5]);
+						 loadModel('ob/she2/blusaB2.obj','ob/she2/blusaB2.mtl',0.0,-17.0,45.0,6,entra[6]);
+						 scene.remove(models[4]);
+						 scene.remove(models[5]);
+						 scene.remove(models[6]);
+						 scene.add(models[5]);
+						 scene.add(models[6]);
+						 }
+						
+							
+						}
+						if(id==object6[4].uuid)
+						{   
+						 if(E2==true)
+						 {
+						 	Ppantalon=621.01;
+						 loadModel('ob/she2/jeans2.obj','ob/she2/jeans2.mtl',0.0,-17.0,45.0,7,entra[7]);
+					     scene.remove(models[7]);
+					     scene.remove(models[8]);
+						 scene.add(models[7]);
+						}
+						if(E1==true)
+							{
+								Ppantalon=231.02;
+                             loadModel('ob/he2/pantalon.obj','ob/he2/pantalon.mtl',0.0,-17.0,45.0,9,entra[9]);
+                             scene.remove(models[9]);
+                             
+                             scene.add(models[9]);
+							}
+						}
+						if(id==object6[5].uuid)
+						{   
+						 if(E2==true)
+						 {
+						 	Ppantalon=240.50;
+						 loadModel('ob/she2/pantalon2.obj','ob/she2/pantalon2.mtl',0.0,-17.0,45.0,8,entra[8]);
+					     scene.remove(models[7]);
+					     scene.remove(models[8]);
+						 scene.add(models[8]);
+						  }
+						 
+						}
+						if(id==object6[1].uuid||id==object5[1].uuid||id==object4[1].uuid)
+						{   
+						 Pplayera=0.0;
+						 Ppantalon=0.0;
+						 scene.remove(models[4]);
+					     scene.remove(models[5]);
+					     scene.remove(models[6]);
+					     scene.remove(models[7]);
+					     scene.remove(models[8]);
+					     scene.remove(models[9]);
+					     scene.remove(models[10]);
+					     scene.remove(models[11]);
+					     scene.remove(models[12]);
+						
+						  
+						 
+						}
+				    }
+			     }
+                
+                down=false;
+               
+		 
+			}
+
+
+			function onDocumentMouseMove()
+			{
+                event.preventDefault();
+               
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			}
+
+			function onWindowResize()
+			{
+				camara.aspect = window.innerWidth / window.innerHeight;
+				camara.updateProjectionMatrix();
+
+				render2.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+               
+				requestAnimationFrame( animate );
+				render2.render( scene, camara ); 
+				update();
+				
+
+			}
+
+			function update()
+			{    
+
+				 total=Pplayera+Ppantalon;
+				 document.getElementById("j11").innerHTML=total+"";
+				// console.log(total);
+				camara.position.z=80.0;
+				camara.lookAt( scene.position );
+                 
+                 if(Egira==1.0)
+                 {
+                 	gira=mouse.x*3;
+                 }
+				
+                models[0].rotation.y=gira;
+                models[1].rotation.y=gira;
+                models[2].rotation.y=gira;
+                models[3].rotation.y=gira;
+                models[4].rotation.y=gira;
+                models[5].rotation.y=gira;
+                models[6].rotation.y=gira;
+                models[7].rotation.y=gira;
+                models[8].rotation.y=gira;
+                models[9].rotation.y=gira;
+                models[10].rotation.y=gira;
+
+                if(dir==true)
+                {
+                	if(gira2<1.00)
+                	{
+                		gira2+=0.005;
+                		
+                	}
+                	 else
+                    {
+                       dir=false;
+                       
+                    }
+                }
+                else
+                {
+                	if(gira2>0.00)
+                	{
+                		gira2-=0.005;
+                	
+                    }
+                	
+                	 else
+                    {
+                       dir=true;
+                    }
+
+                }
+               
+              
+
+                object.rotation.y=gira2;
+				object2.rotation.y=gira2;
+				object3.rotation.y=gira2;
+                
+				var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject(camara);
+
+				raycaster.set( camara.position, vector.sub( camara.position ).normalize() );
+
+				var intersects = raycaster.intersectObjects( scene.children );
+
+				if ( intersects.length > 0 )
+				{
+					
+					if ( INTERSECTED != intersects[ 0 ].object )
+					{
+						 
+					     INTERSECTED = intersects[ 0 ].object;
+						
+						 id=intersects[0].object.uuid;
+						 down=true;
+                        
+						
+					}
+					
+				}
+				else 
+				{
+
+					//if ( INTERSECTED )INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+					INTERSECTED = null;
+					
+					id=null;
+					down=false;
+
+				}
+
+				
+			}
+
+			function estado()
+			{   
+				if(E1==false)
+				{
+					clic.volume = 0.2;
+	  			 	clic.play();
+	  			 	 Pplayera=0.0;
+					Ppantalon=0.0;
+	                loadModel('ob/he2/H3.obj','ob/he2/H3.mtl',0.0,-17.0,45.0,0,entra[0]);
+	                loadModel('ob/he/hair.obj','ob/he/hair.mtl',0.0,-17.0,45.0,2,entra[2]);
+	                
+	                scene.remove(models[0]);
+                    scene.remove(models[1]);
+					scene.remove(models[2]);
+					scene.remove(models[3]);
+					scene.remove(models[4]);
+					scene.remove(models[5]);
+					scene.remove(models[6]);
+					scene.remove(models[7]);
+					scene.remove(models[8]);
+					scene.remove(models[10]);
+					scene.remove(models[11]);
+					scene.remove(models[12]);
+
+                    scene.add(models[0]);
+	                scene.add(models[2]);
+	               
+	                E1=true;
+	                E2=false;
+                }
+			}
+
+			function estado2()
+			{  
+               if(E2==false)
+               {
+	                clic.volume = 0.2;
+	  			 	clic.play();
+	  			 	Pplayera=0.0;
+				    Ppantalon=0.0;
+	                loadModel('ob/she2/M2.obj','ob/she2/M2.mtl',0.0,-17.0,45.0,1,entra[1]);
+	                 loadModel('ob/she/hair.obj','ob/she/hair.mtl',0.0,-17.0,45.0,3,entra[3]);
+	                scene.remove(models[0]);
+                    scene.remove(models[1]);
+					scene.remove(models[2]);
+					scene.remove(models[3]);
+					scene.remove(models[4]);
+					scene.remove(models[5]);
+					scene.remove(models[6]);
+					scene.remove(models[7]);
+					scene.remove(models[8]);
+					scene.remove(models[9]);
+					scene.remove(models[10]);
+					scene.remove(models[11]);
+					scene.remove(models[12]);
+                    scene.add(models[1]);
+                    scene.add(models[3]);
+	                E2=true;
+	                E1=false;
+            	}
+			}
+            
+           
+
+            function play()
+            {
+            	//console.log(Egira);
+               
+               		Egira*=-1.0;
+           
+            }
+			
+
+			function loadModel(obj,mtl,x,y,z,InMol,dale)
+			{
+				 
+                if(dale==true)
+                {	
+				 MODELO.load(obj,mtl,function (objects)
+                  {
+		             objects.position.y =y;
+		              objects.position.z =z;
+		               objects.position.x =x;
+		             scene.add(objects);
+
+		             models[InMol]=objects;
+		          });
+				 entra[InMol]=false;
+				}
+		            
+             }
+
+			
+         
+	     </script>
+     </body>
+</html>

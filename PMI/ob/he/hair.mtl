@@ -1,0 +1,30 @@
+newmtl leon_RE6:material_0
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0000_00jacket_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0000_00jacket_MM.tga
+Ns 0.00
+newmtl leon_RE6:material_3
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0000_00pants_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0000_00pants_MM.tga
+Ns 0.00
+newmtl leon_RE6:material_8
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd pl0000_00hair_BM.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks pl0000_00hair_MM.tga
+Ns 0.00
