@@ -7,42 +7,7 @@
            margin: 0px;
 		   overflow: hidden;
          }
-         #b1
-          { 
-          	background-color: black;
-          	 color: red;
-          	 border-radius: 50%;
-            position: absolute;
-           left: 41%;
-           top: 5%;
-            height: 50px;
-            width: 90px;
-          }
-
-          #b2
-          {
-          	background-color: black;
-          	 color: blue;
-          	 border-radius: 50%;
-            position: absolute;
-           left: 51%;
-           top: 5%;
-           height: 50px;
-            width: 90px;
-          }
-          
-           #g3
-          { 
-          	background-color: black;
-          	 color: white;
-          	 border-radius: 50%;
-            position: absolute;
-           left: 45%;
-           top: 95%;
-           height: 35px;
-            width: 90px;
-          }
-
+        
            #j11
           {
           	color:green;
@@ -73,12 +38,7 @@
 
      	<audio id="clic"><source src="son/button.mp3" type="audio/ogg"></audio>
 
-     	<button type="button" onclick="estado();" id="b1"> Hombre </button>
-        <button type="button" onclick="estado2();" id="b2"> Mujer</button>
-	   
-        <button type="button" onclick="play();" id="g3"> P/S</button>
-
-         <div  id="j11">0</div>
+        <div  id="j11">0</div>
          <div  id="j12">$</div>
        
         </select>
@@ -86,25 +46,28 @@
 	     <script>
 	        var container, stats;
 			var camara, scene, raycaster, render2;
-		    var total=0.0,Ppantalon=0.0,Pplayera=0.0;
+		    var total=0.0,Ppantalon=0.0,Pplayera=0.0,Pgorra=0.0;
 			var clic = document.getElementById("clic");
 
 			var mouse = new THREE.Vector2(), INTERSECTED;
 			
-            var object,object2,object3;
+            var object,object2,object3,chica,chico, fondo,piso,flecha;
             var object4=new Array();
             var object5=new Array();
             var object6=new Array();
-            var cubesnames=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/x.jpg","im/x.jpg"];
-            var cubesnames2=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/1p.jpg","im/2p.jpg"];
-            var cubesnames3=["im/x.jpg","im/su.jpg","im/x.jpg","im/x.jpg","im/1j.jpg","im/2j.jpg"];
+            var cubesnames=["im/x.jpg","im/im9.png","im/guerrera.png"];
+            var cubesnames2=["im/im5.png","im/im1.png","im/im2.png"];
+            var cubesnames3=["im/im6.png","im/im3.png","im/im4.png"];
             var gira=0.0,gira2=0.0,Egira=1.0;
             var dir=true;
 
             //
             var MODELO = new THREE.OBJMTLLoader();
+            var Json = new THREE.JSONLoader();
             THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
            
+
+            var modelsJ= new Array();
             var models = new Array();
             var entra = new Array();
             var tipo=new Array();
@@ -144,17 +107,53 @@
 
 
 				var geometry = new THREE.BoxGeometry( 4, 4, 4 );
-				var geometry2 = new THREE.BoxGeometry( 3, 3,0.01 );
+				var geometry2 = new THREE.BoxGeometry( 4, 4,0.01);
+				var geometry3 = new THREE.BoxGeometry( 195, 129,0.01);
+				var geometry4 = new THREE.BoxGeometry( 190, 60,0.01);
 
-				var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+
+				var cubeMaterial = new THREE.MeshLambertMaterial( { shading: THREE.FlatShading,
 				                                                    map: THREE.ImageUtils.loadTexture( "im/sombrero.jpg" ) } );
 
-				var cubeMaterial2 = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				var cubeMaterial2 = new THREE.MeshLambertMaterial( { shading: THREE.FlatShading,
 				                                                    map: THREE.ImageUtils.loadTexture( "im/playera.jpg" ) } );
 
-				var cubeMaterial3 = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+				var cubeMaterial3 = new THREE.MeshLambertMaterial( { shading: THREE.FlatShading,
 				                                                    map: THREE.ImageUtils.loadTexture( "im/Pantalon.jpg" ) } );
 
+				var boy = new THREE.MeshLambertMaterial( { transparent: true, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture
+					( "im/im8.png" )} );
+				var girl = new THREE.MeshLambertMaterial( { transparent: true, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture
+					( "im/im7.png" )} );
+
+				var tienda = new THREE.MeshLambertMaterial( {shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture
+					( "im/tienda.jpg" )} );
+					var t2 = new THREE.MeshLambertMaterial( {shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture
+					( "im/piso.jpg" )} );
+
+					var t3 = new THREE.MeshLambertMaterial( {transparent: true,shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture
+					( "im/flecha.png" )} );
+
+					flecha=new THREE.Mesh(geometry2,t3);
+					flecha.position.set(0,-8,65);
+					scene.add(flecha);
+ 
+                    chico= new THREE.Mesh(geometry2,boy);
+                    chico.position.set(3,8,65);
+                    chica=new THREE.Mesh(geometry2,girl);
+                    chica.position.set(-3,8,65);
+
+                    scene.add(chica);
+                    scene.add(chico);
+
+                    fondo =new THREE.Mesh( geometry3,tienda);
+                    fondo.position.set(0,40,20);
+                    scene.add(fondo);
+
+                     piso =new THREE.Mesh( geometry4,t2);
+                    piso.position.set(0,-17.1,33);
+                    piso.rotation.x=90;
+                    scene.add(piso);
 
 
 					object = new THREE.Mesh( geometry,cubeMaterial);
@@ -182,40 +181,34 @@
                     object3.rotation.y=25;
                     scene.add( object3 );
 
-				   for(var w=0;w<3;w++)
-				   {
-				   	for(var v=0;v<2;v++)
+				   
+				   	for(var v=0;v<3;v++)
                      {   
-                     	var cubosMaterial=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+                     	var cubosMaterial=new THREE.MeshLambertMaterial( {  transparent: true, shading: THREE.FlatShading,
 				                                                        map: THREE.ImageUtils.loadTexture( cubesnames[indi] ) } );
                      	object4[indi] = new THREE.Mesh( geometry2,cubosMaterial);
                      	object4[indi].position.z=65;
-                        object4[indi].position.x=(v*4)+12;
-                        object4[indi].position.y=(w*5)-5;  
+                        object4[indi].position.x=(v*4)+11;
+                        object4[indi].position.y=0;  
                         /////////////
-                        var cubosMaterial2=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+                        var cubosMaterial2=new THREE.MeshLambertMaterial( {  transparent: true, shading: THREE.FlatShading,
 				                                                        map: THREE.ImageUtils.loadTexture( cubesnames2[indi] ) } );
                      	object5[indi] = new THREE.Mesh( geometry2,cubosMaterial2);
                      	object5[indi].position.z=65;
-                        object5[indi].position.x=(v*4)+12;
-                        object5[indi].position.y=(w*5)-5; 
+                        object5[indi].position.x=(v*4)+11;
+                        object5[indi].position.y=0; 
                         ///////////////
-                        var cubosMaterial3=new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xffffff, shading: THREE.FlatShading,
+                        var cubosMaterial3=new THREE.MeshLambertMaterial( {  transparent: true,shading: THREE.FlatShading,
 				                                                        map: THREE.ImageUtils.loadTexture( cubesnames3[indi] ) } );
                      	object6[indi] = new THREE.Mesh( geometry2,cubosMaterial3);
                      	object6[indi].position.z=65;
-                        object6[indi].position.x=(v*4)+12;
-                        object6[indi].position.y=(w*5)-5; 
+                        object6[indi].position.x=(v*4)+11;
+                        object6[indi].position.y=0; 
                         indi++;
                                         	
                      }
-				   }
+				   
 
-			    var helper = new THREE.GridHelper( 500, 10 );
-				helper.color1.setHex( 0x444444 );
-				helper.color2.setHex( 0x444444 );
-				helper.position.y = -17.1
-				scene.add( helper );
 
 				raycaster = new THREE.Raycaster();
 
@@ -241,6 +234,17 @@
 						clic.volume = 0.2;
 	  			 		clic.play();
 
+	  			 		if(id==chico.uuid)
+	  			 		{
+                           estado();
+	  			 		}
+	  			 		if( id==chica.uuid)
+	  			 		{
+                           estado2();
+	  			 		}
+	  			 		if(id==flecha.uuid)
+	  			 			{play();}
+
 						if(id==object.uuid)
 						{    
 					
@@ -249,11 +253,12 @@
                                scene.remove(object4[ww]);
                                scene.remove(object5[ww]);
                                scene.remove(object6[ww]);
-                               scene.add(object4[ww]);
+                               scene.add(object4[1]);
 							}
 						
-						
+
 						}
+
 						if(id==object2.uuid)
 						{    
 						
@@ -262,10 +267,24 @@
                                scene.remove(object4[ww]);
                                scene.remove(object5[ww]);
                                scene.remove(object6[ww]);
-                               scene.add(object5[ww]);
+                               if(E2==true)
+                               {
+                               scene.add(object5[1]);
+                               scene.add(object5[2]);
+
+                                  
+                               }
+                               if(E1==true)
+                               {
+                               scene.add(object5[0]);
+
+                               }
+
 							}
 							
 						}
+
+
 
 						if(id==object3.uuid)
 						{   
@@ -275,24 +294,49 @@
                                scene.remove(object4[ww]);
                                scene.remove(object5[ww]);
                                scene.remove(object6[ww]);
-                               scene.add(object6[ww]);
+                               
+                               if(E2==true)
+                               {
+                               scene.add(object6[1]);
+                               scene.add(object6[2]);
+
+                                  
+                               }
+                               if(E1==true)
+                               {
+                               scene.add(object6[0]);
+
+                               }
+
 							}
 							
 						}
 
-						if(id==object5[4].uuid)
-						{   
-						 if(E2==true)
+						 if(id==object4[1].uuid)
 						 {
+
+									/////////gorra
+									Pgorra=127.02;
+									scene.remove(models[11]);
+									scene.remove(models[3]);
+									scene.remove(models[2]);
+									loadModel('ob/he2/hat.obj','ob/he2/hat.mtl',0.0,-17.0,45.0,11,entra[11]);
+									scene.add(models[11]);
+	           			}
+
+
+						if(id==object5[2].uuid)
+						{   
+						
 						 loadModel('ob/she2/jacket5.obj','ob/she2/jacket5.mtl',0.0,-17.0,45.0,4,entra[4]);
 						 Pplayera=599.99;
 						 scene.remove(models[5]);
 						 scene.remove(models[4]);
 						 scene.remove(models[6]);
 						 scene.add(models[4]);
-						
 						}
-						if(E1==true)
+
+						if(id==object5[0].uuid)
 						{
 							loadModel('ob/he2/chamarra.obj','ob/he2/chamarra.mtl',0.0,-17.7,45.0,10,entra[10]);
 
@@ -301,12 +345,10 @@
                              scene.add(models[10]);
 						}
 							
-						}
-						if(id==object5[5].uuid)
+						if(id==object5[1].uuid)
 						{   
-						 if(E2==true)
-						 { 
-						 	Pplayera=536.00;
+						
+						 Pplayera=536.00;
 						 loadModel('ob/she2/blusa2.obj','ob/she2/blusa2.mtl',0.0,-17.0,45.0,5,entra[5]);
 						 loadModel('ob/she2/blusaB2.obj','ob/she2/blusaB2.mtl',0.0,-17.0,45.0,6,entra[6]);
 						 scene.remove(models[4]);
@@ -314,21 +356,19 @@
 						 scene.remove(models[6]);
 						 scene.add(models[5]);
 						 scene.add(models[6]);
-						 }
-						
-							
+					
 						}
-						if(id==object6[4].uuid)
+
+						if(id==object6[1].uuid)
 						{   
-						 if(E2==true)
-						 {
-						 	Ppantalon=621.01;
+						 Ppantalon=621.01;
 						 loadModel('ob/she2/jeans2.obj','ob/she2/jeans2.mtl',0.0,-17.0,45.0,7,entra[7]);
 					     scene.remove(models[7]);
 					     scene.remove(models[8]);
 						 scene.add(models[7]);
 						}
-						if(E1==true)
+
+						if(id==object6[0].uuid)
 							{
 								Ppantalon=231.02;
                              loadModel('ob/he2/pantalon.obj','ob/he2/pantalon.mtl',0.0,-17.0,45.0,9,entra[9]);
@@ -336,36 +376,22 @@
                              
                              scene.add(models[9]);
 							}
-						}
-						if(id==object6[5].uuid)
+						
+						if(id==object6[2].uuid)
 						{   
-						 if(E2==true)
-						 {
-						 	Ppantalon=240.50;
+						 
+						 Ppantalon=240.50;
 						 loadModel('ob/she2/pantalon2.obj','ob/she2/pantalon2.mtl',0.0,-17.0,45.0,8,entra[8]);
 					     scene.remove(models[7]);
 					     scene.remove(models[8]);
 						 scene.add(models[8]);
-						  }
-						 
-						}
-						if(id==object6[1].uuid||id==object5[1].uuid||id==object4[1].uuid)
-						{   
-						 Pplayera=0.0;
-						 Ppantalon=0.0;
-						 scene.remove(models[4]);
-					     scene.remove(models[5]);
-					     scene.remove(models[6]);
-					     scene.remove(models[7]);
-					     scene.remove(models[8]);
-					     scene.remove(models[9]);
-					     scene.remove(models[10]);
-					     scene.remove(models[11]);
-					     scene.remove(models[12]);
-						
 						  
 						 
 						}
+
+
+
+						
 				    }
 			     }
                 
@@ -404,7 +430,7 @@
 			function update()
 			{    
 
-				 total=Pplayera+Ppantalon;
+				 total=Pplayera+Ppantalon+Pgorra;
 				 document.getElementById("j11").innerHTML=total+"";
 				// console.log(total);
 				camara.position.z=80.0;
@@ -426,6 +452,7 @@
                 models[8].rotation.y=gira;
                 models[9].rotation.y=gira;
                 models[10].rotation.y=gira;
+                models[11].rotation.y=gira;	
 
                 if(dir==true)
                 {
@@ -521,6 +548,17 @@
 					scene.remove(models[11]);
 					scene.remove(models[12]);
 
+					/////////
+					scene.remove(object4[0]);
+                    scene.remove(object5[0]);
+                    scene.remove(object6[0]);
+                    scene.remove(object4[1]);
+                    scene.remove(object5[1]);
+                    scene.remove(object6[1]);
+                    scene.remove(object4[2]);
+                    scene.remove(object5[2]);
+                    scene.remove(object6[2]);
+
                     scene.add(models[0]);
 	                scene.add(models[2]);
 	               
@@ -552,8 +590,21 @@
 					scene.remove(models[10]);
 					scene.remove(models[11]);
 					scene.remove(models[12]);
+
+					//////////
+					scene.remove(object4[0]);
+                    scene.remove(object5[0]);
+                    scene.remove(object6[0]);
+                    scene.remove(object4[1]);
+                    scene.remove(object5[1]);
+                    scene.remove(object6[1]);
+                    scene.remove(object4[2]);
+                    scene.remove(object5[2]);
+                    scene.remove(object6[2]);
+
                     scene.add(models[1]);
                     scene.add(models[3]);
+
 	                E2=true;
 	                E1=false;
             	}
@@ -588,6 +639,10 @@
 				}
 		            
              }
+
+
+
+            
 
 			
          
